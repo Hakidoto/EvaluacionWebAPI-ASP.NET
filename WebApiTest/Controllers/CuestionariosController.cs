@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ClassLibrary1;
 using WebApiTest.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApiTest.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CuestionariosController : ControllerBase
     {
         private readonly CuestionarioContext _context;
@@ -25,22 +27,22 @@ namespace WebApiTest.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cuestionario>>> GetCuestionarioItems()
         {
-          if (_context.CuestionarioItems == null)
+          if (_context.Cuestionario == null)
           {
               return NotFound();
           }
-            return await _context.CuestionarioItems.ToListAsync();
+            return await _context.Cuestionario.ToListAsync();
         }
 
         // GET: api/Cuestionarios/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Cuestionario>> GetCuestionario(long id)
         {
-          if (_context.CuestionarioItems == null)
+          if (_context.Cuestionario == null)
           {
               return NotFound();
           }
-            var cuestionario = await _context.CuestionarioItems.FindAsync(id);
+            var cuestionario = await _context.Cuestionario.FindAsync(id);
 
             if (cuestionario == null)
             {
@@ -86,11 +88,11 @@ namespace WebApiTest.Controllers
         [HttpPost]
         public async Task<ActionResult<Cuestionario>> PostCuestionario(Cuestionario cuestionario)
         {
-          if (_context.CuestionarioItems == null)
+          if (_context.Cuestionario == null)
           {
               return Problem("Entity set 'CuestionarioContext.CuestionarioItems'  is null.");
           }
-            _context.CuestionarioItems.Add(cuestionario);
+            _context.Cuestionario.Add(cuestionario);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCuestionario", new { id = cuestionario.Id }, cuestionario);
@@ -100,17 +102,17 @@ namespace WebApiTest.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCuestionario(long id)
         {
-            if (_context.CuestionarioItems == null)
+            if (_context.Cuestionario == null)
             {
                 return NotFound();
             }
-            var cuestionario = await _context.CuestionarioItems.FindAsync(id);
+            var cuestionario = await _context.Cuestionario.FindAsync(id);
             if (cuestionario == null)
             {
                 return NotFound();
             }
 
-            _context.CuestionarioItems.Remove(cuestionario);
+            _context.Cuestionario.Remove(cuestionario);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -118,7 +120,7 @@ namespace WebApiTest.Controllers
 
         private bool CuestionarioExists(long id)
         {
-            return (_context.CuestionarioItems?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Cuestionario?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

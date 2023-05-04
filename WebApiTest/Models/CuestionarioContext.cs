@@ -5,7 +5,7 @@ namespace WebApiTest.Models
     public class CuestionarioContext : DbContext
     {
         public CuestionarioContext(DbContextOptions<CuestionarioContext> options) : base(options) { }
-        public DbSet<Cuestionario> CuestionarioItems { get; set; } = null!;
+        public DbSet<Cuestionario> Cuestionario { get; set; } = null!;
     }
 
 }

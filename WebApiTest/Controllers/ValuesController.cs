@@ -8,13 +8,13 @@ namespace WebApiTest.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        [HttpGet]
-        public IEnumerable<Cuestionario> Get()
-        {
-            using (db_cuestionarioEntities entities = new db_cuestionarioEntities())
-            {
-                return entities.Cuestionario.ToList();
-            }
-        }
+        //[HttpGet]
+        //public IEnumerable<Cuestionario> Get()
+        //{
+        //    using (db_cuestionarioEntities entities = new db_cuestionarioEntities())
+        //    {
+        //        return entities.Cuestionario.ToList();
+        //    }
+        //}
     }
 }

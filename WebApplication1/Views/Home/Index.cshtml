@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Datos desde el WebAPI</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripcion</th>
+                <th scope="col">Fecha Limite</th>
+            </tr>
+        </thead>
+        <tbody id="table-body"> 
+        </tbody>
+    </table>
+</div>
+
+
+  @section Scripts{
+    <script type="text/javascript">
+    const url = 'https://localhost:7245/api/Cuestionarios'; 
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJIYWtpZG90byIsImVtYWlsIjoidGVzdC5idGVzdEBnbWFpbC5jb20iLCJEYXRlT2ZKb2luZyI6IjAwMDEtMDEtMDEiLCJqdGkiOiIwYWQzYWI1OS01ZGI0LTQ4NjgtYjliZS0yNmY2NDg4MDRhZTAiLCJleHAiOjE2ODUyNjAxNDIsImlzcyI6IlRlc3QuY29tIiwiYXVkIjoiVGVzdC5jb20ifQ.aQQ7RMTZ-MaL77aK51mVktze9w_OHN2CDFigoRBJKys'; // Replace with your actual Bearer token
+
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+        .then(response => {
+            // Verificacion de la respuesta
+            if (response.ok) {
+                return response.json(); 
+            } else {
+                throw new Error('Request failed with status code ' + response.status);
+            }
+        })
+        .then(data => {
+            // Procesado de datos e insercion en la tabla
+            console.log(data);
+
+                const tableBody = document.getElementById('table-body');
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                <td>${item.id}</td>
+                <td>${item.nombre}</td>
+                <td>${item.descripcion}</td>
+                <td>${item.fechaLimite}</td>
+              `;
+                    tableBody.appendChild(row);
+                });
+        })
+        .catch(error => {
+            // logs
+            console.error(error);
+        });
+    </script>
+        }

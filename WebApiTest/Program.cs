@@ -7,9 +7,20 @@ using System.Text;
 using System.Configuration;
 using System.Data.Entity;
 
-
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.SetIsOriginAllowed(origin => true) //temporal, por alguna razon no me dejaba delimitarlo a 1 solo hostname
+                           .AllowAnyHeader()
+                           .AllowAnyMethod()
+                           .AllowCredentials();
+                      });
+});
 //adding jwt auth
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -41,6 +52,9 @@ builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
+
+app.UseCors(MyAllowSpecificOrigins);
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
